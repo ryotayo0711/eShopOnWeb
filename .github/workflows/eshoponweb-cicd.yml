@@ -9,7 +9,7 @@ env:
   LOCATION: westeurope
   TEMPLATE-FILE: infra/webapp.bicep
   SUBSCRIPTION-ID: 24cfa89f-1dcf-41e6-8091-9d59e701b599
-  WEBAPP-NAME: eshoponweb-webapp-devops-webapp-westeurope-52880505
+  WEBAPP-NAME: devops-webapp-westeurope-52880505
 
 
 jobs:
@@ -76,21 +76,15 @@ jobs:
       uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    # → CLI のバージョンを落とす
-    - name: Pin Azure CLI to 2.72.0
-      run: |
-        sudo apt-get remove -y azure-cli           # システム版CLIをアンインストール
-        pip install --upgrade pip                  # pip自体を最新化（任意）
-        pip install azure-cli==2.72.0               # バグのないCLIバージョンをインストール
-
+           
+    # Deploy Azure WebApp using Bicep file
     - name: deploy
-      uses: azure/arm-deploy@v1
+      uses: azure/arm-deploy@v2
       with:
         subscriptionId: ${{ env.SUBSCRIPTION-ID }}
         resourceGroupName: ${{ env.RESOURCE-GROUP }}
         template: bicep-template/webapp.bicep
         parameters: 'webAppName=${{ env.WEBAPP-NAME }} location=${{ env.LOCATION }}'
-        debug: true        # ← これを追加
         failOnStdErr: false   
     
     # Publish website to Azure App Service (WebApp)
