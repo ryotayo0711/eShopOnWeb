@@ -83,7 +83,7 @@ jobs:
         az upgrade --all --yes --version 2.72.0
     # Deploy Azure WebApp using Bicep file
     - name: deploy
-      uses: azure/arm-deploy@v2
+      uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ env.SUBSCRIPTION-ID }}
         resourceGroupName: ${{ env.RESOURCE-GROUP }}
