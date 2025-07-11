@@ -77,11 +77,12 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     # → CLI のバージョンを落とす
-    - name: Downgrade Azure CLI to 2.72.0
+    - name: Pin Azure CLI to 2.72.0
       run: |
-        az extension remove --name azure-devops || true
-        az upgrade --all --yes --version 2.72.0
-    # Deploy Azure WebApp using Bicep file
+        sudo apt-get remove -y azure-cli           # システム版CLIをアンインストール
+        pip install --upgrade pip                  # pip自体を最新化（任意）
+        pip install azure-cli==2.72.0               # バグのないCLIバージョンをインストール
+
     - name: deploy
       uses: azure/arm-deploy@v1
       with:
