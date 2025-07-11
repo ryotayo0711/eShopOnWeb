@@ -76,7 +76,11 @@ jobs:
       uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-           
+    # → CLI のバージョンを落とす
+    - name: Downgrade Azure CLI to 2.72.0
+      run: |
+        az extension remove --name azure-devops || true
+        az upgrade --all --yes --version 2.72.0
     # Deploy Azure WebApp using Bicep file
     - name: deploy
       uses: azure/arm-deploy@v2
